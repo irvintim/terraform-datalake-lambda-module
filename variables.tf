@@ -77,3 +77,8 @@ variable "s3_bucket" {
   type = string
   description = "S3 bucket to receive data from Lambda Function"
 }
+
+variable "event_schedule_minutes" {
+  type = number
+  description = "How often to trigger the Lambda (minutes)"
+}

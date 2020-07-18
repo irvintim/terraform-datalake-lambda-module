@@ -4,26 +4,30 @@ terraform-datalake-lambda-module
 This module will install a lambda job in the indicated VPC, and configured with permissions to receive data from an external source (likely an API), and put that data into an S3 bucket.  CloudWatch Events have permission to trigger this event.  CloudWatch Logs permissions allow Lambda to send logs.  Other permissions can be added by the calling terraform code.
 
 
-```hcl
+```hcl-terraform
 module terraform-datalake-lambda {
+    # Required Parameters
     name = "lambda_function_name"
     environment = "environment_name"
-   [lambda_source = "/usr/src/src_code"]
-   [lambda_output_path = "/tmp/source_output.zip"]
     lambda_description = "Description of the Lambda Function"
-   [lambda_handler = "lambda_function.lambda_handler"]
     lambda_runtime = "python3.8"
-   [lambda_environment_vars = {
+    s3_bucket = "mybucket"
+    event_schedule_minutes = 60
+
+   # Optional Parameters
+    lambda_source = "/usr/src/src_code" 
+    lambda_output_path = "/tmp/source_output.zip" 
+    lambda_handler = "lambda_function.lambda_handler" 
+    lambda_environment_vars = {
        "S3_BUCKET" = "mybucket",
        "START_TIME" = "-1h@h",
        "END_TIME" = "-0h@h"
-    }]
-   [lambda_memory_size = 128]
-   [lambda_timeout = 3]
-   [lambda_security_group_ids = ["sg-1234567"]]
-   [lambda_subnet_ids = ["subnet-1234567", "subnet-4567890"]]
-    s3_bucket = "mybucket"
-   [global_tags = {"Client" = "MyCustomer"}]
+    } 
+    lambda_memory_size = 128 
+    lambda_timeout = 3 
+    lambda_security_group_ids = ["sg-1234567"] 
+    lambda_subnet_ids = ["subnet-1234567", "subnet-4567890"] 
+    global_tags = {"Client" = "MyCustomer"} 
 }
 ```
 
