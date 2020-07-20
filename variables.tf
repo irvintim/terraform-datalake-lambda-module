@@ -1,84 +1,95 @@
 variable "name" {
-  type = string
+  type        = string
   description = "Name of Lambda function"
 }
 
 variable "environment" {
-  type = string
+  type        = string
   description = "Environment"
 }
 
 variable "global_tags" {
-  type = map(string)
+  type        = map(string)
   description = "Global tags to add to all resources created by this module"
-  default = {}
+  default     = {}
 }
 
 variable "lambda_source" {
-  type = string
+  type        = string
   description = "Path to the top of the Lambda code tree.  Default is lambda_source in root of terraform code."
-  default = ""
+  default     = ""
 }
 
 variable "lambda_output_path" {
-  type = string
+  type        = string
   description = "Path to the directory where zipped Lambda code will be dropped. Default is lambda_output_path in root of terraform code."
-  default = ""
+  default     = ""
 }
 
 variable "lambda_description" {
-  type = string
+  type        = string
   description = "Description of the Lambda Function"
 }
 
 variable "lambda_handler" {
-  type = string
+  type        = string
   description = "Lamda function handler"
-  default = "lambda_function.lambda_handler"
+  default     = "lambda_function.lambda_handler"
 }
 
 variable "lambda_runtime" {
-  type = string
+  type        = string
   description = "Runtime and version"
-  default = "python3.8"
+  default     = "python3.8"
 }
 
 variable "lambda_environment_vars" {
-  type = map(string)
+  type        = map(string)
   description = "Map of environment variables to pass top Lambda function"
-  default = {}
+  default     = {}
 }
 
 variable "lambda_memory_size" {
-  type = number
+  type        = number
   description = "Amount of RAM the Lambda Function can use"
-  default = 128
+  default     = 128
 }
 
 variable "lambda_timeout" {
-  type = number
+  type        = number
   description = "Amount of time the Lambda FUnction has to run"
-  default = 3
+  default     = 3
 }
 
 variable "lambda_security_group_ids" {
-  type = list(string)
+  type        = list(string)
   description = "Security Group(s) associated with the Lambda Function"
-  default = []
+  default     = []
 }
 
 variable "lambda_subnet_ids" {
-  type = list(string)
+  type        = list(string)
   description = "Subnets the Lambda Function is associated with"
-  default = []
+  default     = []
 }
 
 variable "s3_bucket" {
-  type = string
+  type        = string
   description = "S3 bucket to receive data from Lambda Function"
 }
 
+variable "ssm_config_path" {
+  type = string
+  description = "SSM Path for configuration fro this lambda"
+}
+
+variable "lambda_input" {
+  type = map(string)
+  description = "Concverted to JSON Cloudwatch Event Input Docuement for Lambda"
+  default = {}
+}
+
 variable "event_schedule_minutes" {
-  type = number
+  type        = number
   description = "How often to trigger the Lambda (minutes)"
 }

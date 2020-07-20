@@ -19,10 +19,13 @@ module terraform-datalake-lambda {
     lambda_output_path = "/tmp/source_output.zip" 
     lambda_handler = "lambda_function.lambda_handler" 
     lambda_environment_vars = {
-       "S3_BUCKET" = "mybucket",
        "START_TIME" = "-1h@h",
        "END_TIME" = "-0h@h"
     } 
+    lambda_input = {
+        "s3-subdirectory" = "Reports",
+        "timezone" = "naive"
+    }
     lambda_memory_size = 128 
     lambda_timeout = 3 
     lambda_security_group_ids = ["sg-1234567"] 
