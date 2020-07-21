@@ -93,3 +93,4 @@ variable "event_schedule_minutes" {
   type        = number
   description = "How often to trigger the Lambda (minutes)"
 }
+

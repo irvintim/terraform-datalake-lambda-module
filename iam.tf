@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "this_assume_role" {
 
 resource "aws_iam_role" "this" {
   name               = "lambda-${var.name}-${var.environment}-role"
-  path               = "/service-role/"
+  path               = "/lambda-role/"
   assume_role_policy = data.aws_iam_policy_document.this_assume_role.json
 }
 
@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "this" {
       "logs:CreateLogGroup"
     ]
     resources = [
-      "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:*"
+      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
     ]
   }
   statement {
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "this" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.name}-${var.environment}:*"
+      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.name}-${var.environment}:*"
     ]
   }
   statement {
