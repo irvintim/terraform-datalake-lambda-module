@@ -12,7 +12,7 @@ data "archive_file" "src_dir_hash_zip" {
 
 data "archive_file" "dest_dir_hash_zip" {
   type        = "zip"
-  source_dir  = "${var.lambda_output_path}/"
+  source_dir  = "${path.cwd}/lambda_pkg_${random_string.name.result}/"
   output_path = "${path.module}/build/dst_dir_hash_zip"
 }
 
