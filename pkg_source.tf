@@ -12,9 +12,9 @@ data "archive_file" "src_dir_hash_zip" {
 
 resource "null_resource" "install_python_dependencies" {
   triggers = {
-    requirements  = sha1(file("${var.lambda_source}/requirements.txt"))
+    requirements  = filesha256("${var.lambda_source}/requirements.txt")
     src_dir_hash  = data.archive_file.src_dir_hash_zip.output_base64sha256
-    random_trigger = sha1(file("${var.lambda_source}/.randomtrigger"))
+    random_trigger = filesha256("${var.lambda_source}/.randomtrigger")
     random_string = sha1(random_string.name.result)
   }
 
