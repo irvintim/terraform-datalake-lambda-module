@@ -17,7 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "this" {
   evaluation_periods  = "1"
   metric_name         = aws_lambda_function.this.function_name
   namespace           = "INOC/Lambda-Error-Count"
-  period              = "1"
+  period              = "10"
   statistic           = "Maximum"
   threshold           = "1"
   alarm_description   = "Monitors for ERROR messages in Lambda function Cloudwatch Logs"
