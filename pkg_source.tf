@@ -12,10 +12,10 @@ data "archive_file" "src_dir_hash_zip" {
 
 resource "null_resource" "install_python_dependencies" {
   triggers = {
-    requirements  = filesha256("${var.lambda_source}/requirements.txt")
-    src_dir_hash  = data.archive_file.src_dir_hash_zip.output_base64sha256
+    requirements   = filesha256("${var.lambda_source}/requirements.txt")
+    src_dir_hash   = data.archive_file.src_dir_hash_zip.output_base64sha256
     random_trigger = filesha256("${var.lambda_source}/.randomtrigger")
-    random_string = sha1(random_string.name.result)
+    random_string  = sha1(random_string.name.result)
   }
 
   provisioner "local-exec" {
@@ -32,9 +32,16 @@ resource "null_resource" "install_python_dependencies" {
   }
 }
 
+data "null_data_source" "wait_for_install_python_dependencies" {
+  inputs = {
+    install_python_dependencies_id = null_resource.install_python_dependencies.id
+    source_dir = "${path.cwd}/lambda_pkg_${random_string.name.result}/"
+  }
+}
+
 data "archive_file" "lambda_zip" {
   depends_on  = [null_resource.install_python_dependencies]
   type        = "zip"
-  source_dir  = "${path.cwd}/lambda_pkg_${random_string.name.result}/"
+  source_dir  = data.null_data_source.wait_for_install_python_dependencies.outputs["source_dir"]
   output_path = var.lambda_output_path
 }
