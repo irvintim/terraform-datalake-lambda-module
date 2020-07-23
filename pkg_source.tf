@@ -10,17 +10,11 @@ data "archive_file" "src_dir_hash_zip" {
   output_path = "${path.module}/build/src_dir_hash_zip"
 }
 
-data "archive_file" "dest_dir_hash_zip" {
-  type        = "zip"
-  source_dir  = "${path.cwd}/lambda_pkg_${random_string.name.result}/"
-  output_path = "${path.module}/build/dst_dir_hash_zip"
-}
-
 resource "null_resource" "install_python_dependencies" {
   triggers = {
     requirements  = sha1(file("${var.lambda_source}/requirements.txt"))
     src_dir_hash  = data.archive_file.src_dir_hash_zip.output_base64sha256
-    dest_dir_hash = data.archive_file.dest_dir_hash_zip.output_base64sha256
+    dest_dir_exists = fileexists("${path.cwd}/lambda_pkg_${random_string.name.result}/.hashtrigger") ? 1 : 0
     random_string = sha1(random_string.name.result)
   }
 
