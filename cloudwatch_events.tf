@@ -14,7 +14,7 @@ resource "aws_cloudwatch_event_target" "this" {
       SSM_CONFIG_PATH = var.ssm_config_path
     },
     var.lambda_input
-  ) )
+  ))
 }
 
 resource "aws_lambda_permission" "this" {

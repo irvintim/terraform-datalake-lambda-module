@@ -16,11 +16,24 @@ resource "aws_lambda_function" "this" {
     variables = var.lambda_environment_vars
   }
   tags = merge(
-  local.tags,
-  var.global_tags,
-  {
-    "Environment" = var.environment,
-    "Name"        = "${var.name}-${var.environment}"
-  }
+    local.tags,
+    var.global_tags,
+    {
+      "Environment" = var.environment,
+      "Name"        = "${var.name}-${var.environment}"
+    }
+  )
+  depends_on = [aws_cloudwatch_log_group.this]
+}
+
+resource "aws_cloudwatch_log_group" "this" {
+  name = "/aws/lambda/${var.name}-${var.environment}"
+  tags = merge(
+    local.tags,
+    var.global_tags,
+    {
+      "Environment" = var.environment,
+      "Name"        = "${var.name}-${var.environment}"
+    }
   )
 }

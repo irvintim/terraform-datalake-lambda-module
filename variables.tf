@@ -79,14 +79,14 @@ variable "s3_bucket" {
 }
 
 variable "ssm_config_path" {
-  type = string
+  type        = string
   description = "SSM Path for configuration fro this lambda"
 }
 
 variable "lambda_input" {
-  type = map(string)
+  type        = map(string)
   description = "Concverted to JSON Cloudwatch Event Input Docuement for Lambda"
-  default = {}
+  default     = {}
 }
 
 variable "event_schedule_minutes" {
@@ -94,3 +94,8 @@ variable "event_schedule_minutes" {
   description = "How often to trigger the Lambda (minutes)"
 }
 
+variable "sns_topic" {
+  type        = string
+  description = "SNS Topic to send alarms to (if defined)"
+  default     = ""
+}
