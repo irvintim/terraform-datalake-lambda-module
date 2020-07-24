@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-if ! pip install --upgrade virtualenv; then
+if ! pip install --user --upgrade virtualenv; then
   echo "Unable to install "virtualenv" package" 1>&2
   exit 1
 fi
