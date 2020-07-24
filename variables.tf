@@ -99,3 +99,9 @@ variable "sns_topic" {
   description = "SNS Topic to send alarms to (if defined)"
   default     = ""
 }
+
+variable "cloudwatch_logs_retention_in_days" {
+  type = number
+  default = null
+  description = "How long to retain Cloudwatch Logs for this function, null is indefinite"
+}
