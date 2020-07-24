@@ -1,7 +1,22 @@
+resource "aws_cloudwatch_log_group" "this" {
+  name = "/aws/lambda/${aws_lambda_function.this.function_name}"
+  tags = merge(
+    local.tags,
+    var.global_tags,
+    {
+      "Environment" = var.environment,
+      "Name"        = "${aws_lambda_function.this.function_name}-ERRORS"
+    }
+  )
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_cloudwatch_log_metric_filter" "this" {
   name           = "ERROR-Logs"
   pattern        = "\"[ERROR]\""
-  log_group_name = "/aws/lambda/${aws_lambda_function.this.function_name}"
+  log_group_name = aws_cloudwatch_log_group.this.name
 
   metric_transformation {
     name      = aws_lambda_function.this.function_name
