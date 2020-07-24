@@ -8,9 +8,6 @@ resource "aws_cloudwatch_log_group" "this" {
       "Name"        = "${aws_lambda_function.this.function_name}-ERRORS"
     }
   )
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "aws_cloudwatch_log_metric_filter" "this" {
