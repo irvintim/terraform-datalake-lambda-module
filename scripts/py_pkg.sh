@@ -1,9 +1,20 @@
 #!/bin/bash -e
 
-if ! pip install --user --upgrade virtualenv; then
+if ! $runtime --version; then
+  echo "Unable to run $runtime on this system, needed to install the pythin packaged needed by this module, exiting...." 1>&2
+  exit 1
+fi
+
+if ! $runtime -m ensurepip --user; then
+   echo "Unable to install pip for $runtime" 1>&2
+   exit 1
+fi
+
+if ! $runtime -m pip install --user --upgrade virtualenv; then
   echo "Unable to install "virtualenv" package" 1>&2
   exit 1
 fi
+
 cd $path_cwd
 dir_name=lambda_pkg_$random_string/
 mkdir -p $dir_name
