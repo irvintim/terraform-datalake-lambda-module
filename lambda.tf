@@ -27,7 +27,9 @@ resource "aws_lambda_function" "this" {
 }
 
 resource "aws_lambda_layer_version" "this" {
-  layer_name          = "${var.name}-${var.environment}-${var.lambda_runtime}-layer"
+  layer_name          = "${var.name}-${var.lambda_runtime}-layer"
+  license_info        = "various"
+  description         = "Layer of Python modules not available in stock Lambda"
   filename            = data.archive_file.layer_zip.output_path
   source_code_hash    = data.archive_file.layer_zip.output_base64sha256
   compatible_runtimes = [var.lambda_runtime]
