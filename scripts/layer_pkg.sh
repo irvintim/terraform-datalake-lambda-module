@@ -3,10 +3,6 @@
 cd $path_cwd
 FILE=$source_code_path/requirements.txt
 # If requirements.txt hasn't changed then do nothing
-echo unzip -p $layer_zipfile requirements.txt
-unzip -p $layer_zipfile requirements.txt
-echo $FILE
-cat $FILE
 if unzip -p $layer_zipfile requirements.txt | diff -b -B  -q - $FILE; then
   exit 0
 fi
