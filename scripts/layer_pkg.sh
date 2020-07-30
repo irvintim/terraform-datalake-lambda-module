@@ -12,8 +12,6 @@ if unzip -p $layer_zipfile requirements.txt | diff -b -B  -q - $FILE; then
 fi
 dir_name=layer_pkg_$random_string/
 if [ -f $FILE ]; then
-  py_dir="python/lib/$runtime/site-packages"
-  mkdir -p $path_cwd/$dir_name/$py_dir
   echo "requirements.txt file exists in source_code_path. Installing dependencies for layer file.."
 else
   echo "requirements.txt file does not exist. Skipping installation of dependencies, no layer file is needed."
@@ -42,6 +40,9 @@ if ! virtualenv -p $runtime env-$function_name; then
 fi
 source env-$function_name/bin/activate
 
+py_dir="python/lib/$runtime/site-packages"
+rm -rf $path_cwd/$dir_name
+mkdir -p $path_cwd/$dir_name/$py_dir
 pip install -q -r $FILE -t $path_cwd/$dir_name/$py_dir --upgrade
 cp $FILE $path_cwd/$dir_name
 
