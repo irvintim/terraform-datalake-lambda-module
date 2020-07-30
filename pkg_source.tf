@@ -25,12 +25,12 @@ resource "null_resource" "package_python_code" {
 data "null_data_source" "wait_for_package_python_code" {
   inputs = {
     install_python_dependencies_id = null_resource.package_python_code.id
-    source_dir = "${path.cwd}/lambda_pkg_${random_string.name.result}/"
+    source_dir                     = "${path.cwd}/lambda_pkg_${random_string.name.result}/"
   }
 }
 
 data "archive_file" "lambda_zip" {
-  depends_on = [null_resource.package_python_code]
+  depends_on  = [null_resource.package_python_code]
   type        = "zip"
   source_dir  = data.null_data_source.wait_for_package_python_code.outputs["source_dir"]
   output_path = var.lambda_output_path

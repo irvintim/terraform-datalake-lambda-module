@@ -21,7 +21,6 @@ provider "random" {
 locals {
   lambda_source      = var.lambda_source == "" ? "${path.root}/lambda_source" : var.lambda_source
   lambda_output_path = var.lambda_output_path == "" ? "${path.root}/${var.name}-${var.environment}.zip" : var.lambda_output_path
-  layer_output_path = var.layer_output_path == "" ? "${path.root}/${var.name}-${var.environment}-layer.zip" : var.layer_output_path
   tags               = {}
 }
 

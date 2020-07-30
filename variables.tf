@@ -26,10 +26,10 @@ variable "lambda_output_path" {
   default     = ""
 }
 
-variable "layer_output_path" {
+variable "layer_zipfile" {
   type        = string
-  description = "Path to the directory where zipped Lambda Layer module code will be dropped. Default is layer_output_path in root of terraform code."
-  default     = ""
+  description = "Zip file containing the Python modules to go in the layer"
+  default     = "module-layer.zip"
 }
 
 variable "lambda_description" {
@@ -107,7 +107,7 @@ variable "sns_topic" {
 }
 
 variable "cloudwatch_logs_retention_in_days" {
-  type = number
-  default = null
+  type        = number
+  default     = null
   description = "How long to retain Cloudwatch Logs for this function, null is indefinite"
 }

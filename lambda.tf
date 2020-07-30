@@ -27,9 +27,9 @@ resource "aws_lambda_function" "this" {
 }
 
 resource "aws_lambda_layer_version" "this" {
-  layer_name = "${var.name}-${var.environment}-${var.lambda_runtime}-layer"
-  filename = data.archive_file.layer_zip.output_path
-  source_code_hash = data.archive_file.layer_zip.output_base64sha256
+  layer_name          = "${var.name}-${var.environment}-${var.lambda_runtime}-layer"
+  filename            = data.archive_file.layer_zip.output_path
+  source_code_hash    = data.archive_file.layer_zip.output_base64sha256
   compatible_runtimes = [var.lambda_runtime]
 }
 

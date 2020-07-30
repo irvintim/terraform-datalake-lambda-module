@@ -1,6 +1,8 @@
 resource "null_resource" "install_python_dependencies" {
   triggers = {
-    requirements   = filesha256("${var.lambda_source}/requirements.txt")
+    requirements  = filesha256("${var.lambda_source}/requirements.txt")
+    layer_zipfile = filesha256("${path.cwd}/${var.layer_zipfile}")
+    runtime       = var.lambda_runtime
   }
 
   provisioner "local-exec" {
@@ -20,13 +22,13 @@ resource "null_resource" "install_python_dependencies" {
 data "null_data_source" "wait_for_install_python_dependencies" {
   inputs = {
     install_python_dependencies_id = null_resource.install_python_dependencies.id
-    source_dir = "${path.cwd}/layer_pkg_${random_string.name.result}/"
+    source_dir                     = "${path.cwd}/layer_pkg_${random_string.name.result}/"
   }
 }
 
 data "archive_file" "layer_zip" {
-  depends_on = [null_resource.install_python_dependencies]
+  depends_on  = [null_resource.install_python_dependencies]
   type        = "zip"
   source_dir  = data.null_data_source.wait_for_install_python_dependencies.outputs["source_dir"]
-  output_path = var.layer_output_path
+  output_path = var.layer_zipfile
 }
