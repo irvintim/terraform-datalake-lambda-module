@@ -5,7 +5,9 @@ FILE=$source_code_path/requirements.txt
 if unzip -p $layer_zipfile requirements.txt | diff -b -B  -q - $FILE; then
   exit 0
 fi
+dir_name=layer_pkg_$random_string/
 if [ -f $FILE ]; then
+  mkdir -p $path_cwd/$dir_name
   echo "requirements.txt file exists in source_code_path. Installing dependencies for layer file.."
   pip install -q -r $FILE -t $path_cwd/$dir_name --upgrade
 else
@@ -28,9 +30,6 @@ if ! $runtime -m pip install --user --upgrade virtualenv; then
   exit 1
 fi
 
-dir_name=layer_pkg_$random_string/
-mkdir -p $path_cwd/$dir_name
-
 cd $path_module
 if ! virtualenv -p $runtime env-$function_name; then
   echo "Unable to create virtualenv for $runtime, you need to install $runtime on your build system" 1>&2
@@ -43,7 +42,7 @@ if [[ $source_code_path != /* ]];then
 fi
 
 deactivate
-cp -r $FILE $path_cwd/$dir_name
+cp $FILE $path_cwd/$dir_name
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
 rm -rf $path_module/env-$function_name/
 GITIGNOREFILE=$path_cwd/.gitignore
