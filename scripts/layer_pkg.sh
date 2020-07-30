@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if [[ $source_code_path != /* ]];then
+   source_code_path=$path_cwd/$source_code_path
+fi
+
 cd $path_cwd
 FILE=$source_code_path/requirements.txt
 # If requirements.txt hasn't changed then do nothing
@@ -8,9 +12,10 @@ if unzip -p $layer_zipfile requirements.txt | diff -b -B  -q - $FILE; then
 fi
 dir_name=layer_pkg_$random_string/
 if [ -f $FILE ]; then
-  mkdir -p $path_cwd/$dir_name
+  py_dir="python/lib/$runtime/site-packages"
+  mkdir -p $path_cwd/$dir_name/$py_dir
   echo "requirements.txt file exists in source_code_path. Installing dependencies for layer file.."
-  pip install -q -r $FILE -t $path_cwd/$dir_name --upgrade
+  pip install -q -r $FILE -t $path_cwd/$dir_name/$py_dir --upgrade
   cp $FILE $path_cwd/$dir_name
 else
   echo "requirements.txt file does not exist. Skipping installation of dependencies, no layer file is needed."
@@ -38,10 +43,6 @@ if ! virtualenv -p $runtime env-$function_name; then
   exit 1
 fi
 source env-$function_name/bin/activate
-
-if [[ $source_code_path != /* ]];then
-   source_code_path=$path_cwd/$source_code_path
-fi
 
 deactivate
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
