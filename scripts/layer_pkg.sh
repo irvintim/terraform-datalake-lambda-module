@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+cd $path_cwd
 FILE=$source_code_path/requirements.txt
 # If requirements.txt hasn't changed then do nothing
 if unzip -p $layer_zipfile requirements.txt | diff -b -B  -q - $FILE; then
@@ -10,6 +11,7 @@ if [ -f $FILE ]; then
   mkdir -p $path_cwd/$dir_name
   echo "requirements.txt file exists in source_code_path. Installing dependencies for layer file.."
   pip install -q -r $FILE -t $path_cwd/$dir_name --upgrade
+  cp $FILE $path_cwd/$dir_name
 else
   echo "requirements.txt file does not exist. Skipping installation of dependencies, no layer file is needed."
   exit 0
@@ -42,7 +44,6 @@ if [[ $source_code_path != /* ]];then
 fi
 
 deactivate
-cp $FILE $path_cwd/$dir_name
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
 rm -rf $path_module/env-$function_name/
 GITIGNOREFILE=$path_cwd/.gitignore
