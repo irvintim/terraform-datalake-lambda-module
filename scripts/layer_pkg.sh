@@ -15,8 +15,6 @@ if [ -f $FILE ]; then
   py_dir="python/lib/$runtime/site-packages"
   mkdir -p $path_cwd/$dir_name/$py_dir
   echo "requirements.txt file exists in source_code_path. Installing dependencies for layer file.."
-  pip install -q -r $FILE -t $path_cwd/$dir_name/$py_dir --upgrade
-  cp $FILE $path_cwd/$dir_name
 else
   echo "requirements.txt file does not exist. Skipping installation of dependencies, no layer file is needed."
   exit 0
@@ -43,6 +41,9 @@ if ! virtualenv -p $runtime env-$function_name; then
   exit 1
 fi
 source env-$function_name/bin/activate
+
+pip install -q -r $FILE -t $path_cwd/$dir_name/$py_dir --upgrade
+cp $FILE $path_cwd/$dir_name
 
 deactivate
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
