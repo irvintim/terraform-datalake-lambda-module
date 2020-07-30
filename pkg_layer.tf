@@ -4,9 +4,9 @@ locals {
 }
 resource "null_resource" "install_python_dependencies" {
   triggers = {
-    requirements  = local.requirements_hash
-    layer_zipfile = local.layer_zipfile_hash
-    runtime       = var.lambda_runtime
+    requirements_hash  = local.requirements_hash
+    layer_zipfile_hash = local.layer_zipfile_hash
+    runtime            = var.lambda_runtime
   }
 
   provisioner "local-exec" {
@@ -16,6 +16,7 @@ resource "null_resource" "install_python_dependencies" {
       source_code_path = var.lambda_source
       path_cwd         = path.cwd
       path_module      = path.module
+      layer_zipfile    = local.layer_zipfile
       runtime          = var.lambda_runtime
       function_name    = "${var.name}-${var.environment}"
       random_string    = random_string.name.result

@@ -27,7 +27,7 @@ resource "aws_lambda_function" "this" {
 }
 
 resource "aws_lambda_layer_version" "this" {
-  layer_name          = "module-layer"
+  layer_name = "module-layer"
   #layer_name          = "${var.name}-${var.environment}-${var.lambda_runtime}-layer"
   license_info        = "various"
   description         = "Layer of Python modules not available in stock Lambda"
