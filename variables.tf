@@ -29,7 +29,7 @@ variable "lambda_output_path" {
 variable "layer_zipfile" {
   type        = string
   description = "Zip file containing the Python modules to go in the layer"
-  default     = "module-layer.zip"
+  default     = ""
 }
 
 variable "lambda_description" {

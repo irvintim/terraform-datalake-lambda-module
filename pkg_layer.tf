@@ -34,5 +34,5 @@ data "archive_file" "layer_zip" {
   depends_on  = [null_resource.install_python_dependencies]
   type        = "zip"
   source_dir  = data.null_data_source.wait_for_install_python_dependencies.outputs["source_dir"]
-  output_path = var.layer_zipfile
+  output_path = local.layer_zipfile
 }
