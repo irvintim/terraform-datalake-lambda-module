@@ -8,6 +8,7 @@ resource "aws_lambda_function" "this" {
   runtime          = var.lambda_runtime
   memory_size      = var.lambda_memory_size
   timeout          = var.lambda_timeout
+  layers           = [aws_lambda_layer_version.this.layer_arn]
   vpc_config {
     security_group_ids = var.lambda_security_group_ids
     subnet_ids         = var.lambda_subnet_ids
@@ -15,7 +16,6 @@ resource "aws_lambda_function" "this" {
   environment {
     variables = var.lambda_environment_vars
   }
-  layers = [aws_lambda_layer_version.this.arn]
   tags = merge(
     local.tags,
     var.global_tags,

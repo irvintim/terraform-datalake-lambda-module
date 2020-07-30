@@ -1,5 +1,5 @@
 locals {
-  requirements_hash = fileexists("${var.lambda_source}/requirements.txt") ? filesha256("${var.lambda_source}/requirements.txt") : 0
+  requirements_hash  = fileexists("${var.lambda_source}/requirements.txt") ? filesha256("${var.lambda_source}/requirements.txt") : 0
   layer_zipfile_hash = fileexists("${path.cwd}/${var.layer_zipfile}") ? filesha256("${path.cwd}/${var.layer_zipfile}") : 0
 }
 resource "null_resource" "install_python_dependencies" {
