@@ -26,6 +26,12 @@ variable "lambda_output_path" {
   default     = ""
 }
 
+variable "layer_output_path" {
+  type        = string
+  description = "Path to the directory where zipped Lambda Layer module code will be dropped. Default is layer_output_path in root of terraform code."
+  default     = ""
+}
+
 variable "lambda_description" {
   type        = string
   description = "Description of the Lambda Function"
