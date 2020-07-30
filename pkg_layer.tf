@@ -1,7 +1,10 @@
+locals {
+  requirements_hash = fileexists("${var.lambda_source}/requirements.txt") ? filesha256("${var.lambda_source}/requirements.txt") : 0
+}
 resource "null_resource" "install_python_dependencies" {
   triggers = {
-    requirements  = filesha256("${var.lambda_source}/requirements.txt")
-    layer_zipfile = filesha256("${path.cwd}/${var.layer_zipfile}")
+    requirements  = local.requirements_hash
+    layer_zipfile = data.archive_file.layer_zip.output_base64sha256
     runtime       = var.lambda_runtime
   }
 
