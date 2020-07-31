@@ -30,8 +30,9 @@ resource "aws_lambda_layer_version" "this" {
   layer_name          = "${var.name}-layer"
   license_info        = "various"
   description         = "Layer of Python modules not available in stock Lambda"
-  filename            = data.archive_file.layer_zip.output_path
-  source_code_hash    = data.archive_file.layer_zip.output_base64sha256
+  filename            = local.layer_zipfile
+  source_code_hash    = local.layer_zipfile_hash
   compatible_runtimes = [var.lambda_runtime]
+  depends_on          = [null_resource.install_python_dependencies]
 }
 

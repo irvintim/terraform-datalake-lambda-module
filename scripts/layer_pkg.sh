@@ -10,7 +10,7 @@ FILE=$source_code_path/requirements.txt
 if unzip -p $layer_zipfile requirements.txt | diff -b -B  -q - $FILE; then
   exit 0
 fi
-dir_name=layer_pkg_$random_string/
+dir_name=layer_pkg_dir/
 if [ -f $FILE ]; then
   echo "requirements.txt file exists in source_code_path. Installing dependencies for layer file.."
 else
@@ -45,6 +45,8 @@ rm -rf $path_cwd/$dir_name
 mkdir -p $path_cwd/$dir_name/$py_dir
 pip install -q -r $FILE -t $path_cwd/$dir_name/$py_dir --upgrade
 cp $FILE $path_cwd/$dir_name
+cd $path_cwd/$dir_name
+zip -r $layer_zipfile .
 
 deactivate
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
