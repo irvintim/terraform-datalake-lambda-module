@@ -9,7 +9,3 @@ fi
 
 cp -r $source_code_path/. $path_cwd/$dir_name
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
-
-GITIGNOREFILE=$path_cwd/.gitignore
-grep -q '#ignore lambda_pkg dir' $GITIGNOREFILE 2> /dev/null || echo '#ignore lambda_pkg dir' >> $GITIGNOREFILE
-grep -q $dir_name $GITIGNOREFILE 2> /dev/null || echo $dir_name >> $GITIGNOREFILE
