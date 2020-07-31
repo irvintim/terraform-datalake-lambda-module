@@ -47,6 +47,8 @@ pip install -q -r $FILE -t $path_cwd/$dir_name/$py_dir --upgrade
 cp $FILE $path_cwd/$dir_name
 cd $path_cwd/$dir_name
 zip -r $layer_zipfile .
+cd $path_module
+rm -rf $path_cwd/$dir_name
 
 deactivate
 echo "Random value to trigger a source rebuild "$random_string > $path_cwd/$dir_name/.hashtrigger
