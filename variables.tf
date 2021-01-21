@@ -14,10 +14,40 @@ variable "global_tags" {
   default     = {}
 }
 
-variable "lambda_source" {
+variable "lambda_s3_bucket" {
   type        = string
-  description = "Path to the top of the Lambda code tree.  Default is lambda_source in root of terraform code."
-  default     = ""
+  description = "S3 bucket with lambda code, ignored if lambda_source is defined"
+  default     = null
+}
+
+variable "lambda_s3_key" {
+  type        = string
+  description = "S3 key with lambda code, ignored if lambda_source is defined"
+  default     = null
+}
+
+variable "lambda_s3_version" {
+  type        = string
+  description = "S3 object version with lambda code, ignored if lambda_source is defined"
+  default     = null
+}
+
+variable "lambda_layer_s3_bucket" {
+  type        = string
+  description = "S3 bucket with lambda layer code, ignored if lambda_source is defined"
+  default     = null
+}
+
+variable "lambda_layer_s3_key" {
+  type        = string
+  description = "S3 key with lambda layer code, ignored if lambda_source is defined"
+  default     = null
+}
+
+variable "lambda_layer_s3_version" {
+  type        = string
+  description = "S3 object version with lambda layer code, ignored if lambda_source is defined"
+  default     = null
 }
 
 variable "lambda_output_path" {
