@@ -50,18 +50,6 @@ variable "lambda_layer_s3_version" {
   default     = null
 }
 
-variable "lambda_output_path" {
-  type        = string
-  description = "Path to the directory where zipped Lambda code will be dropped. Default is lambda_output_path in root of terraform code."
-  default     = ""
-}
-
-variable "layer_zipfile" {
-  type        = string
-  description = "Zip file containing the Python modules to go in the layer"
-  default     = ""
-}
-
 variable "lambda_description" {
   type        = string
   description = "Description of the Lambda Function"

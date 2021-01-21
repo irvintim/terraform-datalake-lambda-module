@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "this" {
   count               = var.event_schedule_minutes > 0 ? 1 : 0
-  name                = "${var.name}-${var.environment}-cloudwatch-event"
+  name                = substr("${var.name}-${var.environment}-cloudwatch-event", 0, 64)
   description         = "Cloudwatch Event to Trigger Lambda ${var.name}-${var.environment}"
   schedule_expression = "rate(${var.event_schedule_minutes} minutes)"
 }
