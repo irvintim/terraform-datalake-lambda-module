@@ -28,7 +28,7 @@ resource "aws_lambda_function" "this" {
 }
 
 resource "aws_lambda_layer_version" "this" {
-  count               = var.lambda_layer_s3_bucket != null ? 1 : 0
+  count               = var.lambda_layer_s3_key != null ? 1 : 0
   layer_name          = "${var.name}-layer"
   license_info        = "various"
   description         = "Layer of modules not available in stock Lambda"
