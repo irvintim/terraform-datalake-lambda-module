@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "this" {
   description       = var.lambda_description
   s3_bucket         = var.lambda_s3_bucket
-  s3_key            = var.lambda_s3_bucket
+  s3_key            = var.lambda_s3_key
   s3_object_version = var.lambda_s3_version
   function_name     = "${var.name}-${var.environment}"
   role              = aws_iam_role.this.arn
