@@ -87,6 +87,15 @@ data "aws_iam_policy_document" "this" {
     ]
   }
   statement {
+    sid = "DDMDescribeParameters"
+    actions = [
+      "ssm:DescribeParameters"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
     sid = "SSMGetParametersByPath"
     actions = [
       "ssm:GetParameters",
