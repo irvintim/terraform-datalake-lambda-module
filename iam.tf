@@ -99,7 +99,8 @@ data "aws_iam_policy_document" "this" {
     sid = "SSMGetParametersByPath"
     actions = [
       "ssm:GetParameters",
-      "ssm:GetParametersByPath"
+      "ssm:GetParametersByPath",
+      "ssm:GetParameter"
     ]
     resources = [
       "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_config_path}",
