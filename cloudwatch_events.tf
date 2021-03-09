@@ -2,7 +2,7 @@ resource "aws_cloudwatch_event_rule" "this" {
   count               = var.event_schedule != "" ? 1 : 0
   name                = substr("${var.name}-${var.environment}-cloudwatch-event", 0, 64)
   description         = "Cloudwatch Event to Trigger Lambda ${var.name}-${var.environment}"
-  schedule_expression = "${local.event_schedule}"
+  schedule_expression = local.event_schedule
 }
 
 resource "aws_cloudwatch_event_target" "this" {
