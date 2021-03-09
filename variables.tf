@@ -81,7 +81,7 @@ variable "lambda_memory_size" {
 
 variable "lambda_timeout" {
   type        = number
-  description = "Amount of time the Lambda FUnction has to run"
+  description = "Amount of time the Lambda Function has to run"
   default     = 3
 }
 
@@ -109,13 +109,13 @@ variable "ssm_config_path" {
 
 variable "lambda_input" {
   type        = map(string)
-  description = "Concverted to JSON Cloudwatch Event Input Docuement for Lambda"
+  description = "Converted to JSON Cloudwatch Event Input Document for Lambda"
   default     = {}
 }
 
-variable "event_schedule_minutes" {
+variable "event_schedule" {
   type        = number
-  description = "How often to trigger the Lambda (minutes)"
+  description = "How often to trigger the Lambda (either minutes, or cron)"
 }
 
 variable "sns_topic" {

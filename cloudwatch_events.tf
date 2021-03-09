@@ -1,12 +1,12 @@
 resource "aws_cloudwatch_event_rule" "this" {
-  count               = var.event_schedule_minutes > 0 ? 1 : 0
+  count               = var.event_schedule != "" ? 1 : 0
   name                = substr("${var.name}-${var.environment}-cloudwatch-event", 0, 64)
   description         = "Cloudwatch Event to Trigger Lambda ${var.name}-${var.environment}"
-  schedule_expression = "rate(${var.event_schedule_minutes} minutes)"
+  schedule_expression = "${local.event_schedule}"
 }
 
 resource "aws_cloudwatch_event_target" "this" {
-  count     = var.event_schedule_minutes > 0 ? 1 : 0
+  count     = var.event_schedule != "" ? 1 : 0
   rule      = aws_cloudwatch_event_rule.this[0].name
   target_id = "${var.name}-${var.environment}"
   arn       = aws_lambda_function.this.arn
@@ -20,7 +20,7 @@ resource "aws_cloudwatch_event_target" "this" {
 }
 
 resource "aws_lambda_permission" "this" {
-  count         = var.event_schedule_minutes > 0 ? 1 : 0
+  count         = var.event_schedule != "" ? 1 : 0
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.this.function_name
