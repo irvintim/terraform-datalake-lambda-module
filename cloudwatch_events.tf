@@ -2,7 +2,7 @@ resource "aws_cloudwatch_event_rule" "this" {
   count               = length(local.event_schedule)
   name                = substr("${var.name}-${var.environment}-cloudwatch-event-${count.index}", 0, 64)
   description         = "Cloudwatch Event ${count.index} to Trigger Lambda ${var.name}-${var.environment}"
-  schedule_expression = regexall("^[0-9]+$", local.event_schedule[count.index]) == "" ? local.event_schedule[count.index] : "rate(${local.event_schedule[count.index]} minutes)"
+  schedule_expression = length(regexall("^[0-9]+$", local.event_schedule[count.index])) == 0 ? local.event_schedule[count.index] : "rate(${local.event_schedule[count.index]} minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "this" {
