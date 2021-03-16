@@ -20,7 +20,15 @@ provider "random" {
 
 locals {
   tags = {}
-  event_schedule = regex("^[0-9]+$", var.event_schedule) == "" ? var.event_schedule : "rate(${var.event_schedule} minutes)"
+  event_schedule = try(
+          [tostring(var.event_schedule)],
+          tolist(var.event_schedule)
+          )
+  lambda_input = try(
+          [tomap(var.lambda_input)],
+          [for x in tolist(var.lambda_input) : tomap(x)]
+          )
+  s3_bucket = var.s3_bucket != null ? var.s3_bucket : "NO_BUCKET"
 }
 
 resource "random_string" "name" {

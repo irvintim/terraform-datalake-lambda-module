@@ -64,8 +64,8 @@ data "aws_iam_policy_document" "this" {
       "s3:ListMultipartUploadParts"
     ]
     resources = [
-      "arn:aws:s3:::${var.s3_bucket}",
-      "arn:aws:s3:::${var.s3_bucket}/*"
+      "arn:aws:s3:::${local.s3_bucket}",
+      "arn:aws:s3:::${local.s3_bucket}/*"
     ]
   }
   statement {
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "this" {
       "s3:CreateBucket"
     ]
     resources = [
-      "arn:aws:s3:::${var.s3_bucket}"
+      "arn:aws:s3:::${local.s3_bucket}"
     ]
   }
   statement {
