@@ -19,7 +19,7 @@ provider "random" {
 }
 
 locals {
-  tags = {}
+  tags           = {}
   event_schedule = regex("^[0-9]+$", var.event_schedule) == "" ? var.event_schedule : "rate(${var.event_schedule} minutes)"
 }
 

@@ -3,6 +3,14 @@ resource "aws_cloudwatch_event_rule" "this" {
   name                = substr("${var.name}-${var.environment}-cloudwatch-event", 0, 64)
   description         = "Cloudwatch Event to Trigger Lambda ${var.name}-${var.environment}"
   schedule_expression = local.event_schedule
+  tags = merge(
+    local.tags,
+    var.global_tags,
+    {
+      "Environment" = var.environment,
+      "Name"        = "${var.name}-${var.environment}"
+    }
+  )
 }
 
 resource "aws_cloudwatch_event_target" "this" {
