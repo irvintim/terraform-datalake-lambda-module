@@ -118,3 +118,60 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
   policy_arn = aws_iam_policy.this.arn
 }
+
+data "aws_iam_policy_document" "snowpipe" {
+  statement {
+    sid = "SnowpipeGetS3"
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectVersion"
+    ]
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}/*",
+    ]
+  }
+  statement {
+    sid = "SnowpipeListS3"
+    actions = [
+      "s3:ListBucket"
+    ]
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "snowpipe_assume_role" {
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::988245671738:user/gl4u-s-v2su2085"
+      ]
+    }
+    condition {
+      test = "StringEquals"
+      values = [local.snowpipe_external_id]
+      variable = "sts:ExternalId"
+    }
+  }
+}
+
+resource "aws_iam_role" "snowpipe" {
+  name               = substr("snowpipe-${var.name}-${var.environment}-role", 0, 64)
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.snowpipe_assume_role.json
+}
+
+resource "aws_iam_policy" "snowpipe" {
+  name   = "snowpipe-${var.name}-${var.environment}-policy"
+  policy = data.aws_iam_policy_document.snowpipe.json
+}
+
+resource "aws_iam_role_policy_attachment" "snowpipe" {
+  role       = aws_iam_role.snowpipe.name
+  policy_arn = aws_iam_policy.snowpipe.arn
+}
