@@ -50,34 +50,6 @@ data "aws_iam_policy_document" "this" {
     ]
   }
   statement {
-    sid = "S3GetPut"
-    actions = [
-      "s3:PutObject",
-      "s3:PutObjectAcl",
-      "s3:PutObjectTagging",
-      "s3:GetObject",
-      "s3:GetObjectAcl",
-      "s3:GetObjectTagging",
-      "s3:DeleteObject",
-      "s3:ListBucketMultipartUploads",
-      "s3:AbortMultipartUpload",
-      "s3:ListMultipartUploadParts"
-    ]
-    resources = [
-      "arn:aws:s3:::${var.s3_bucket}",
-      "arn:aws:s3:::${var.s3_bucket}/*"
-    ]
-  }
-  statement {
-    sid = "S3CreateBucket"
-    actions = [
-      "s3:CreateBucket"
-    ]
-    resources = [
-      "arn:aws:s3:::${var.s3_bucket}"
-    ]
-  }
-  statement {
     sid = "S3ListBucket"
     actions = [
       "s3:ListBucket"
@@ -107,6 +79,40 @@ data "aws_iam_policy_document" "this" {
       "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_config_path}*"
     ]
   }
+  dynamic "statement" {
+    for_each = [ var.s3_bucket ]
+    content {
+      sid = "S3GetPut"
+      actions = [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutObjectTagging",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:GetObjectTagging",
+        "s3:DeleteObject",
+        "s3:ListBucketMultipartUploads",
+        "s3:AbortMultipartUpload",
+        "s3:ListMultipartUploadParts"
+      ]
+      resources = [
+        "arn:aws:s3:::${statement}",
+        "arn:aws:s3:::${statement}/*"
+      ]
+    }
+  }
+  dynamic "statement" {
+    for_each = [ var.s3_bucket ]
+    content {
+      sid = "S3CreateBucket"
+      actions = [
+        "s3:CreateBucket"
+      ]
+      resources = [
+        "arn:aws:s3:::${statement}"
+      ]
+    }
+  }
 }
 
 resource "aws_iam_policy" "this" {
@@ -120,24 +126,30 @@ resource "aws_iam_role_policy_attachment" "this" {
 }
 
 data "aws_iam_policy_document" "snowpipe" {
-  statement {
-    sid = "SnowpipeGetS3"
-    actions = [
-      "s3:GetObject",
-      "s3:GetObjectVersion"
-    ]
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}/*",
-    ]
+  dynamic "statement" {
+    for_each = [ var.s3_bucket ]
+    content {
+      sid = "SnowpipeGetS3"
+      actions = [
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ]
+      resources = [
+        "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}/*",
+      ]
+    }
   }
-  statement {
-    sid = "SnowpipeListS3"
-    actions = [
-      "s3:ListBucket"
-    ]
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}"
-    ]
+  dynamic "statement" {
+    for_each = [ var.s3_bucket ]
+    content {
+      sid = "SnowpipeListS3"
+      actions = [
+        "s3:ListBucket"
+      ]
+      resources = [
+        "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}"
+      ]
+    }
   }
 }
 
