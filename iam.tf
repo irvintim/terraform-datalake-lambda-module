@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "this" {
     ]
   }
   dynamic "statement" {
-    for_each = [ var.s3_bucket ]
+    for_each = [var.s3_bucket]
     content {
       sid = "S3GetPut"
       actions = [
@@ -102,7 +102,7 @@ data "aws_iam_policy_document" "this" {
     }
   }
   dynamic "statement" {
-    for_each = [ var.s3_bucket ]
+    for_each = [var.s3_bucket]
     content {
       sid = "S3CreateBucket"
       actions = [
@@ -127,7 +127,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 
 data "aws_iam_policy_document" "snowpipe" {
   dynamic "statement" {
-    for_each = [ var.s3_bucket ]
+    for_each = [var.s3_bucket]
     content {
       sid = "SnowpipeGetS3"
       actions = [
@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "snowpipe" {
     }
   }
   dynamic "statement" {
-    for_each = [ var.s3_bucket ]
+    for_each = [var.s3_bucket]
     content {
       sid = "SnowpipeListS3"
       actions = [
@@ -165,8 +165,8 @@ data "aws_iam_policy_document" "snowpipe_assume_role" {
       ]
     }
     condition {
-      test = "StringEquals"
-      values = [local.snowpipe_external_id]
+      test     = "StringEquals"
+      values   = [local.snowpipe_external_id]
       variable = "sts:ExternalId"
     }
   }
