@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "dest_bucket" {
-  count  = len(var.s3_bucket) > 0 ? 1 : 0
+  count  = length(var.s3_bucket) > 0 ? 1 : 0
   bucket = var.s3_bucket
   acl    = "private"
 

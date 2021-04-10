@@ -96,8 +96,8 @@ data "aws_iam_policy_document" "this" {
         "s3:ListMultipartUploadParts"
       ]
       resources = [
-        "arn:aws:s3:::${statement}",
-        "arn:aws:s3:::${statement}/*"
+        "arn:aws:s3:::${var.s3_bucket}",
+        "arn:aws:s3:::${var.s3_bucket}/*"
       ]
     }
   }
@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "this" {
         "s3:CreateBucket"
       ]
       resources = [
-        "arn:aws:s3:::${statement}"
+        "arn:aws:s3:::${var.s3_bucket}"
       ]
     }
   }
@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "snowpipe" {
         "s3:GetObjectVersion"
       ]
       resources = [
-        "arn:aws:s3:::${statement}/*",
+        "arn:aws:s3:::${var.s3_bucket}/*",
       ]
     }
   }
@@ -147,7 +147,7 @@ data "aws_iam_policy_document" "snowpipe" {
         "s3:ListBucket"
       ]
       resources = [
-        "arn:aws:s3:::${statement}"
+        "arn:aws:s3:::${var.s3_bucket}"
       ]
     }
   }
