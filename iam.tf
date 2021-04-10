@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "this" {
     ]
   }
   dynamic "statement" {
-    for_each = [var.s3_bucket]
+    for_each = { for v in [var.s3_bucket] : v => v }
     content {
       sid = "S3GetPut"
       actions = [
@@ -102,7 +102,7 @@ data "aws_iam_policy_document" "this" {
     }
   }
   dynamic "statement" {
-    for_each = [var.s3_bucket]
+    for_each = { for v in [var.s3_bucket] : v => v }
     content {
       sid = "S3CreateBucket"
       actions = [
@@ -127,7 +127,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 
 data "aws_iam_policy_document" "snowpipe" {
   dynamic "statement" {
-    for_each = [var.s3_bucket]
+    for_each = { for v in [var.s3_bucket] : v => v }
     content {
       sid = "SnowpipeGetS3"
       actions = [
@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "snowpipe" {
     }
   }
   dynamic "statement" {
-    for_each = [var.s3_bucket]
+    for_each = { for v in [var.s3_bucket] : v => v }
     content {
       sid = "SnowpipeListS3"
       actions = [
@@ -173,17 +173,20 @@ data "aws_iam_policy_document" "snowpipe_assume_role" {
 }
 
 resource "aws_iam_role" "snowpipe" {
+  count = var.s3_bucket != null ? 1 : 0
   name               = substr("snowpipe-${var.name}-${var.environment}-role", 0, 64)
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.snowpipe_assume_role.json
 }
 
 resource "aws_iam_policy" "snowpipe" {
+  count = var.s3_bucket != null ? 1 : 0
   name   = "snowpipe-${var.name}-${var.environment}-policy"
   policy = data.aws_iam_policy_document.snowpipe.json
 }
 
 resource "aws_iam_role_policy_attachment" "snowpipe" {
-  role       = aws_iam_role.snowpipe.name
-  policy_arn = aws_iam_policy.snowpipe.arn
+  count = var.s3_bucket != null ? 1 : 0
+  role       = aws_iam_role.snowpipe[0].name
+  policy_arn = aws_iam_policy.snowpipe[0].arn
 }

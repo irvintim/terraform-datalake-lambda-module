@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "dest_bucket" {
-  count  = length(var.s3_bucket) > 0 ? 1 : 0
+  count  = var.s3_bucket != null  ? 1 : 0
   bucket = var.s3_bucket
   acl    = "private"
 
@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "dest_bucket" {
 }
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
-  count  = length(var.s3_bucket) > 0 ? 1 : 0
+  count  = var.s3_bucket != null ? 1 : 0
   bucket = aws_s3_bucket.dest_bucket[0].id
 
   queue {
