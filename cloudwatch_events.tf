@@ -21,7 +21,7 @@ resource "aws_cloudwatch_event_target" "this" {
   arn       = aws_lambda_function.this.arn
   input = jsonencode(merge(
     {
-      S3_BUCKET       = local.s3_bucket
+      S3_BUCKET       = var.s3_bucket
       SSM_CONFIG_PATH = var.ssm_config_path
     },
     local.lambda_input[count.index]

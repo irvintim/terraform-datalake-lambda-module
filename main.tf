@@ -28,7 +28,7 @@ locals {
           [tomap(var.lambda_input)],
           [for x in tolist(var.lambda_input) : tomap(x)]
           )
-  s3_bucket = var.s3_bucket != null ? var.s3_bucket : "NO_BUCKET"
+  s3_bucket = var.s3_bucket != null ? [var.s3_bucket] : []
   snowpipe_sqs         = "arn:aws:sqs:us-east-1:988245671738:sf-snowpipe-AIDA6MGAIH45F4YAWF7M2-5fUi1EqYJh47swW-cOaPtA"
   snowpipe_external_id = "DTA64387_SFCRole=2_jcgDNE16q+uusaNErns8Z8VmYIo="
 }
