@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "snowpipe" {
         "s3:GetObjectVersion"
       ]
       resources = [
-        "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}/*",
+        "arn:aws:s3:::${statement}/*",
       ]
     }
   }
@@ -147,7 +147,7 @@ data "aws_iam_policy_document" "snowpipe" {
         "s3:ListBucket"
       ]
       resources = [
-        "arn:aws:s3:::${aws_s3_bucket.dest_bucket.id}"
+        "arn:aws:s3:::${statement}"
       ]
     }
   }
