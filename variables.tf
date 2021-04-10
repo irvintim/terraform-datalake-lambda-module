@@ -108,13 +108,13 @@ variable "ssm_config_path" {
 }
 
 variable "lambda_input" {
-  type        = map(string)
+  type        = any
   description = "Converted to JSON Cloudwatch Event Input Document for Lambda"
   default     = {}
 }
 
 variable "event_schedule" {
-  type        = number
+  type        = any
   description = "How often to trigger the Lambda (either minutes, or cron)"
 }
 

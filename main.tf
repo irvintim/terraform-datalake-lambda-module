@@ -19,8 +19,16 @@ provider "random" {
 }
 
 locals {
-  tags                 = {}
-  event_schedule       = regex("^[0-9]+$", var.event_schedule) == "" ? var.event_schedule : "rate(${var.event_schedule} minutes)"
+  tags = {}
+  event_schedule = try(
+          [tostring(var.event_schedule)],
+          tolist(var.event_schedule)
+          )
+  lambda_input = try(
+          [tomap(var.lambda_input)],
+          [for x in tolist(var.lambda_input) : tomap(x)]
+          )
+  s3_bucket = var.s3_bucket != null ? var.s3_bucket : "NO_BUCKET"
   snowpipe_sqs         = "arn:aws:sqs:us-east-1:988245671738:sf-snowpipe-AIDA6MGAIH45F4YAWF7M2-5fUi1EqYJh47swW-cOaPtA"
   snowpipe_external_id = "DTA64387_SFCRole=2_jcgDNE16q+uusaNErns8Z8VmYIo="
 }
