@@ -129,3 +129,9 @@ variable "cloudwatch_logs_retention_in_days" {
   default     = null
   description = "How long to retain Cloudwatch Logs for this function, null is indefinite"
 }
+
+variable "extra_iam_statements" {
+  type = list(map(string))
+  default = []
+  description = "List of additional IAM rules to add to Lambda role, format: [{'Actions': ['foo.*','bar.publish'], 'Resources': '*'}]"
+}

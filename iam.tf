@@ -113,6 +113,14 @@ data "aws_iam_policy_document" "this" {
       ]
     }
   }
+  dynamic "statement" {
+    for_each = var.extra_iam_statements
+    content {
+      sid = "Extra${statement.key}"
+      actions = statement.value["Actions"]
+      resources = statement.value["Resources"]
+    }
+  }
 }
 
 resource "aws_iam_policy" "this" {
