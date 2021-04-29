@@ -20,7 +20,7 @@ provider "random" {
 
 locals {
   tags = {}
-  event_schedule = try(
+  event_schedule = var.event_schedule == null ? [] : try(
           [tostring(var.event_schedule)],
           tolist(var.event_schedule)
           )
