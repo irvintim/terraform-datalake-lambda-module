@@ -117,8 +117,8 @@ data "aws_iam_policy_document" "this" {
     for_each = var.extra_iam_statements
     content {
       sid = "Extra${statement.key}"
-      actions = statement.value["Actions"]
-      resources = statement.value["Resources"]
+      actions = split(",", statement.value["Actions"])
+      resources = split(",", statement.value["Resources"])
     }
   }
 }
