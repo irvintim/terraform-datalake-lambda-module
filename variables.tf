@@ -135,3 +135,9 @@ variable "extra_iam_statements" {
   default = []
   description = "List of additional IAM rules to add to Lambda role, format: [{'Actions': ['foo.*','bar.publish'], 'Resources': '*'}]"
 }
+
+variable "anomaly_band_width" {
+  type = number
+  default = 1
+  description = "This number adjusts the width of the anomaly detection range"
+}

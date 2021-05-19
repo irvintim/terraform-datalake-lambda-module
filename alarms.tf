@@ -45,7 +45,7 @@ resource "aws_cloudwatch_metric_alarm" "this" {
   )
 }
 
-resource "aws_cloudwatch_metric_alarm" "xx_anomaly_detection" {
+resource "aws_cloudwatch_metric_alarm" "s3_anomaly_detection" {
   count  = var.s3_bucket != null  ? 1 : 0
   alarm_name                = "${var.s3_bucket}-S3-missing-data"
   comparison_operator       = "LessThanLowerThreshold"
@@ -53,13 +53,18 @@ resource "aws_cloudwatch_metric_alarm" "xx_anomaly_detection" {
   threshold_metric_id       = "ad1"
   alarm_description         = "This metric monitors ${var.s3_bucket} for gaps in incoming data"
   insufficient_data_actions = []
-  alarm_actions = ["arn:aws:sns:us-east-1:547715215608:datawarehouse-lambda-alarms-noreport"]
+  alarm_actions = ["arn:aws:sns:us-east-1:547715215608:datawarehouse-lambda-alarms-noreport"] #TODo Update to Prod SNS Topic
+  datapoints_to_alarm = "1"
+  actions_enabled = true
+  ok_actions = []
+  treat_missing_data = "missing"
+
 
   metric_query {
-    #id          = "e1"
-    #expression  = "ANOMALY_DETECTION_BAND(m1)"
-    #label       = "CPUUtilization (Expected)"
-    #return_data = "true"
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, ${var.anomaly_band_width})"
+    label       = "NumberOfObjects (expected)"
+    return_data = true
   }
 
   metric_query {
@@ -73,7 +78,8 @@ resource "aws_cloudwatch_metric_alarm" "xx_anomaly_detection" {
       unit        = "Count"
 
       dimensions = {
-        #InstanceId = "i-abc123"
+        StorageType = "AllStorageTypes"
+        BucketName = var.s3_bucket
       }
     }
   }
