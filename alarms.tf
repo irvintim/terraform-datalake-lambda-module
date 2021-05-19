@@ -44,3 +44,37 @@ resource "aws_cloudwatch_metric_alarm" "this" {
     }
   )
 }
+
+resource "aws_cloudwatch_metric_alarm" "xx_anomaly_detection" {
+  count  = var.s3_bucket != null  ? 1 : 0
+  alarm_name                = "${var.s3_bucket}-S3-missing-data"
+  comparison_operator       = "LessThanLowerThreshold"
+  evaluation_periods        = "1"
+  threshold_metric_id       = "ad1"
+  alarm_description         = "This metric monitors ${var.s3_bucket} for gaps in incoming data"
+  insufficient_data_actions = []
+  alarm_actions = ["arn:aws:sns:us-east-1:547715215608:datawarehouse-lambda-alarms-noreport"]
+
+  metric_query {
+    #id          = "e1"
+    #expression  = "ANOMALY_DETECTION_BAND(m1)"
+    #label       = "CPUUtilization (Expected)"
+    #return_data = "true"
+  }
+
+  metric_query {
+    id          = "m1"
+    return_data = "true"
+    metric {
+      metric_name = "NumberOfObjects"
+      namespace   = "AWS/S3"
+      period      = "86400"
+      stat        = "Average"
+      unit        = "Count"
+
+      dimensions = {
+        #InstanceId = "i-abc123"
+      }
+    }
+  }
+}
