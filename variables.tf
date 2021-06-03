@@ -145,5 +145,5 @@ variable "anomaly_band_width" {
 variable "snowpipe_external_id" {
   type = string
   description = "Snowpipe external ID"
-  default =  = null
+  default = null
 }
