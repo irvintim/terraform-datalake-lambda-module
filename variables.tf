@@ -141,3 +141,9 @@ variable "anomaly_band_width" {
   default = 1
   description = "This number adjusts the width of the anomaly detection range"
 }
+
+variable "snowpipe_external_id" {
+  type = string
+  description = "Snowpipe external ID"
+  default =  = null
+}
