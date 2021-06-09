@@ -12,12 +12,12 @@ resource "aws_s3_bucket" "dest_bucket" {
   })
 }
 
-//resource "aws_s3_bucket_notification" "bucket_notification" {
-//  count  = var.s3_bucket != null ? 1 : 0
-//  bucket = aws_s3_bucket.dest_bucket[0].id
-//
-//  queue {
-//    queue_arn = local.snowpipe_sqs
-//    events    = ["s3:ObjectCreated:*"]
-//  }
-//}
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  count  = var.s3_bucket != null ? 1 : 0
+  bucket = aws_s3_bucket.dest_bucket[0].id
+
+  queue {
+    queue_arn = local.snowpipe_sqs
+    events    = ["s3:ObjectCreated:*"]
+  }
+}
