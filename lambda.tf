@@ -36,5 +36,8 @@ resource "aws_lambda_layer_version" "this" {
   s3_key              = var.lambda_layer_s3_key
   s3_object_version   = var.lambda_layer_s3_version
   compatible_runtimes = [var.lambda_runtime]
+  lifecycle {
+    ignore_changes = ["source_code_hash"]
+  }
 }
 
